@@ -20,6 +20,16 @@ class GameLevel extends Sketch {
     pushMatrix();
     sprite.update();
     sprite.draw();
+    
+    pushStyle();
+    fill(255,0,0); noStroke();
+    for(SpriteAction action: sprite.actions){
+      if(action.appliesTo(sprite)){
+        rect(sprite.x,sprite.y,10,10);
+      }
+    }
+    popStyle();
+    
     popMatrix();
 
     pushMatrix();

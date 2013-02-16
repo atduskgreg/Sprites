@@ -1,0 +1,6 @@
+* Cycle to next sprite when current one completes
+* Sprites have a movement direction (and magnitude?) associated with them
+* Sprites have one or more attack/defense/move frames that trigger associated actions
+* Sounds on action frames, different sounds when users' triggers coincide
+* Reed+Rader GIFs
+* 

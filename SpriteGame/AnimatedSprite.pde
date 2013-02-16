@@ -48,6 +48,30 @@ class FrameWindow {
   }
 }
 
+class SpriteAction{
+  int triggerFrame;
+  PVector direction;
+  int actionType;
+  
+ static final int ATTACK = 0;
+ static final int BLOCK = 1;
+ static final int JUMP = 1;
+  
+  SpriteAction(int triggerFrame, PVector direction, int actionType){
+    this.triggerFrame = triggerFrame;
+    this.direction = direction;
+    this.actionType = actionType;
+  }
+  
+  int getTriggerFrame(){
+    return triggerFrame;
+  }
+  
+  boolean appliesTo(AnimatedSprite sprite){
+    return triggerFrame == sprite.getCurrentFrame();
+  }
+}
+
 class AnimatedSprite {
   float x;  // location for Animation
   float y;  // location for Animation
@@ -70,7 +94,10 @@ class AnimatedSprite {
   boolean playing = false;
   boolean playOnce = true;
   
+  ArrayList<SpriteAction> actions;
+  
   FrameWindow window;
+  
 
   AnimatedSprite(String pathToImages, float x_, float y_, int fps) {
     loadImagesFromPath(pathToImages);
@@ -83,6 +110,11 @@ class AnimatedSprite {
     setFPS(fps);
     
     window = new FrameWindow(0, images.length);
+    
+    actions = new ArrayList<SpriteAction>();
+    SpriteAction thrustAttack = new SpriteAction(8, new PVector(1,0), SpriteAction.ATTACK);
+    println("triggerFrame: " + thrustAttack.getTriggerFrame());
+    actions.add(thrustAttack);
   }
 
   AnimatedSprite(PImage[] images_, float x_, float y_, int fps) {
@@ -98,6 +130,10 @@ class AnimatedSprite {
 
   int getNumFrames() {
     return images.length;
+  }
+  
+  int getCurrentFrame(){
+    return int(index);
   }
 
 
@@ -155,6 +191,14 @@ class AnimatedSprite {
 
     for (int i = 0; i < images.length; i++) {
       image(images[i], i*this.width, 0);
+      for(SpriteAction action : actions){
+        if(action.getTriggerFrame() == i){
+          pushStyle();
+          noStroke(); fill(255,0,0);
+          rect(i*this.width,0, 15,15);
+          popStyle();
+        }
+      }
     }
 
     pushStyle();
@@ -163,9 +207,11 @@ class AnimatedSprite {
     rect(int(index)*this.width, 0, this.width, this.height);
     stroke(0,255,0);
     strokeWeight(3);
-    println("start: " + window.getStart() + " size: " + window.getSize());
     line(int(window.getStart())*this.width, -10, int(window.getStart() + window.getSize()) * this.width, -10);
     popStyle();
+    
+    
+    
   }
 
   void draw() {
@@ -182,9 +228,7 @@ class AnimatedSprite {
       index += speed;
       // If we are at the end, go back to the beginning
       
-      print("pre-loop: " + index);
       index = window.getLoopedFrame(index);
-      println(" post-loop: " + index);
 
       if (index >= images.length) {
         if (playOnce) {
