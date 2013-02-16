@@ -1,3 +1,5 @@
+import java.io.*;
+
 AnimatedSprite animation;
 int fps = 15;
 
