@@ -4,7 +4,7 @@ class GameLevel extends Sketch {
 
   GameLevel(PApplet p) {
     super(p);
-    sprite = new AnimatedSprite(dataPath("animation"), width/2, 10, fps);
+    sprite = new AnimatedSprite(dataPath("lunge"), width/2, 10, fps);
     sprite.loop();
   }
 
@@ -24,6 +24,7 @@ class GameLevel extends Sketch {
 
     pushMatrix();
     translate(10, height - sprite.height - 10);
+    scale(0.4,0.4);
     sprite.displayFrames();
     popMatrix();
   }
