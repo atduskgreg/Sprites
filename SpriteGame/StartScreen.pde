@@ -11,7 +11,12 @@ class StartScreen extends Sketch {
   void draw() {
     background(0);
     stroke(255);
-    text("welcome! This is the start screen\nPress any key to start the game", 50,50);
+    pushMatrix();
+    scale(5);
+    text("Welcome to\nSPRITE!\n", 10,50);
+    scale(0.2);
+    text("(press any key to play)", 10*5, 400);
+    popMatrix();
   }
   
   void keyPressed(){

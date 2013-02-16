@@ -55,7 +55,8 @@ class SpriteAction{
   
  static final int ATTACK = 0;
  static final int BLOCK = 1;
- static final int JUMP = 1;
+ static final int JUMP = 2;
+ static final int MOVE = 3;
   
   SpriteAction(int triggerFrame, PVector direction, int actionType){
     this.triggerFrame = triggerFrame;
