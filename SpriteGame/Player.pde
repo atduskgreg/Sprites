@@ -6,8 +6,9 @@ class Player{
   int fps = 15;
   
   Player(){
-    sprites = new AnimatedSprite[1];
-    sprites[0] = new AnimatedSprite(dataPath("lunge"), width/2, 10, fps);
+    sprites = new AnimatedSprite[2];
+    sprites[0] = new AnimatedSprite(dataPath("lunge"), 0, 0, fps);
+    sprites[1] = new AnimatedSprite(dataPath("reverse-lunge"), 0, 0, fps);
   }
   
   void setCurrentSprite(int spriteIndex){

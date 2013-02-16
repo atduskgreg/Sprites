@@ -7,6 +7,10 @@ class GameLevel extends Sketch {
     player1 = new Player();
     player1.setPos(new PVector(10, height - 150));
     player1.setCurrentSprite(0);
+    
+    player2 = new Player();
+    player2.setPos(new PVector(300, height - 150));
+    player2.setCurrentSprite(1);
   }
 
   void reinit() {
@@ -22,10 +26,19 @@ class GameLevel extends Sketch {
     player1.update();
     player1.draw();
     
+    player2.update();
+    player2.draw();
+    
     pushMatrix();
     translate(10, height - 50);
-    scale(0.4,0.4);
+    pushMatrix();
+    scale(0.2,0.2);
     player1.getCurrentSprite().displayFrames();
+    popMatrix();
+    translate(0, width/2);
+    scale(0.2,0.2);
+    player2.getCurrentSprite().displayFrames();
+
     popMatrix();
   }
 
@@ -75,6 +88,13 @@ class GameLevel extends Sketch {
     }
     if(keyCode == LEFT){
       player1.moveLeft();
+    }
+    
+    if(keyCode == 'd'){
+      player2.moveRight();
+    }
+    if(keyCode == 'a'){
+      player2.moveLeft();
     }
   }
 }

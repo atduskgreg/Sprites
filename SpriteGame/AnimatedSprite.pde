@@ -74,6 +74,7 @@ class SpriteAction{
 }
 
 class AnimatedSprite {
+  // FIXME: remove this x/y crap and always do it at 0,0
   float x;  // location for Animation
   float y;  // location for Animation
 
