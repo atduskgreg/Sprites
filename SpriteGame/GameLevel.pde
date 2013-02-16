@@ -1,13 +1,12 @@
 class GameLevel extends Sketch {
-  AnimatedSprite sprite;
+  Player player1, player2;
   int fps = 15;
-  PVector pos;
 
   GameLevel(PApplet p) {
     super(p);
-    sprite = new AnimatedSprite(dataPath("lunge"), width/2, 10, fps);
-    sprite.loop();
-    pos = new PVector(10, height - sprite.height - 100);
+    player1 = new Player();
+    player1.setPos(new PVector(10, height - 150));
+    player1.setCurrentSprite(0);
   }
 
   void reinit() {
@@ -19,63 +18,51 @@ class GameLevel extends Sketch {
     fill(125);
     text("Press 'q' quit\n'[/]' to shorten/length sequence\n'{/}' to change sequence start\n'+/- to change FPS'\nLEFT/RIGHT to move\n" + fps + " FPS", 25, 25);
 
-    pushMatrix();
-    translate(pos.x, pos.y);
-    sprite.update();
-    sprite.draw();
     
-    pushStyle();
-    fill(255,0,0); noStroke();
-    for(SpriteAction action: sprite.actions){
-      if(action.appliesTo(sprite)){
-        rect(sprite.x,sprite.y,10,10);
-      }
-    }
-    popStyle();
+    player1.update();
+    player1.draw();
     
-    popMatrix();
-
     pushMatrix();
-    translate(10, height - sprite.height - 10);
+    translate(10, height - 50);
     scale(0.4,0.4);
-    sprite.displayFrames();
+    player1.getCurrentSprite().displayFrames();
     popMatrix();
   }
 
   void keyPressed() {
     if (key == 'p') {
-      if (sprite.isPlaying()) {
-        sprite.stop();
+      if (player1.getCurrentSprite().isPlaying()) {
+        player1.getCurrentSprite().stop();
       } 
       else {
-        sprite.loop();
+        player1.getCurrentSprite().loop();
       }
     }
     if (key == '=' || key == '+') {
       fps++;
-      sprite.setFPS(fps);
+      player1.getCurrentSprite().setFPS(fps);
     } 
     
      if (key == '-' || key == '_') {
       fps--;
       if (fps < 0) fps = 0;
-      sprite.setFPS(fps);
+      player1.getCurrentSprite().setFPS(fps);
     }
     
     if(key == '}'){
-      sprite.window.start++;
+      player1.getCurrentSprite().window.start++;
     }
     
     if(key == '{'){
-      sprite.window.start--;
+      player1.getCurrentSprite().window.start--;
     }
     
     if(key == ']'){
-      sprite.window.size++;
+      player1.getCurrentSprite().window.size++;
     }
     
     if(key == '['){
-      sprite.window.size--;
+      player1.getCurrentSprite().window.size--;
     }
     
    
@@ -84,10 +71,10 @@ class GameLevel extends Sketch {
     }
     
     if(keyCode == RIGHT){
-      pos.x += 15;
+      player1.moveRight();
     }
     if(keyCode == LEFT){
-      pos.x -= 15;
+      player1.moveLeft();
     }
   }
 }
