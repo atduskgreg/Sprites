@@ -22,12 +22,12 @@ class FrameWindow {
   int getEnd() {
     return start + size;
   }
-  
-  int getStart(){
+
+  int getStart() {
     return start;
   }
-  
-  int getSize(){
+
+  int getSize() {
     return size;
   }
 
@@ -48,27 +48,32 @@ class FrameWindow {
   }
 }
 
-class SpriteAction{
+class SpriteAction {
   int triggerFrame;
   PVector direction;
   int actionType;
-  
- static final int ATTACK = 0;
- static final int BLOCK = 1;
- static final int JUMP = 2;
- static final int MOVE = 3;
-  
-  SpriteAction(int triggerFrame, PVector direction, int actionType){
+  int range;
+
+  static final int ATTACK = 0;
+  static final int BLOCK = 1;
+  static final int JUMP = 2;
+  static final int MOVE = 3;
+
+  SpriteAction(int triggerFrame, PVector direction, int actionType) {
     this.triggerFrame = triggerFrame;
     this.direction = direction;
     this.actionType = actionType;
   }
-  
-  int getTriggerFrame(){
+
+  int getTriggerFrame() {
     return triggerFrame;
   }
   
-  boolean appliesTo(AnimatedSprite sprite){
+  void setRange(int pix){
+    range = pix;
+  }
+
+  boolean appliesTo(AnimatedSprite sprite) {
     return triggerFrame == sprite.getCurrentFrame();
   }
 }
@@ -95,11 +100,11 @@ class AnimatedSprite {
 
   boolean playing = false;
   boolean playOnce = true;
-  
+
   ArrayList<SpriteAction> actions;
-  
+
   FrameWindow window;
-  
+
 
   AnimatedSprite(String pathToImages, float x_, float y_, int fps) {
     loadImagesFromPath(pathToImages);
@@ -110,11 +115,11 @@ class AnimatedSprite {
     this.fps = fps;
     index = 0;
     setFPS(fps);
-    
+
     window = new FrameWindow(0, images.length);
-    
+
     actions = new ArrayList<SpriteAction>();
-    SpriteAction thrustAttack = new SpriteAction(8, new PVector(1,0), SpriteAction.ATTACK);
+    SpriteAction thrustAttack = new SpriteAction(8, new PVector(1, 0), SpriteAction.ATTACK);
     println("triggerFrame: " + thrustAttack.getTriggerFrame());
     actions.add(thrustAttack);
   }
@@ -133,8 +138,8 @@ class AnimatedSprite {
   int getNumFrames() {
     return images.length;
   }
-  
-  int getCurrentFrame(){
+
+  int getCurrentFrame() {
     return int(index);
   }
 
@@ -193,11 +198,12 @@ class AnimatedSprite {
 
     for (int i = 0; i < images.length; i++) {
       image(images[i], i*this.width, 0);
-      for(SpriteAction action : actions){
-        if(action.getTriggerFrame() == i){
+      for (SpriteAction action : actions) {
+        if (action.getTriggerFrame() == i) {
           pushStyle();
-          noStroke(); fill(255,0,0);
-          rect(i*this.width,0, 15,15);
+          noStroke(); 
+          fill(255, 0, 0);
+          rect(i*this.width, 0, 15, 15);
           popStyle();
         }
       }
@@ -207,13 +213,10 @@ class AnimatedSprite {
     stroke(255, 0, 0); 
     noFill();
     rect(int(index)*this.width, 0, this.width, this.height);
-    stroke(0,255,0);
+    stroke(0, 255, 0);
     strokeWeight(3);
     line(int(window.getStart())*this.width, -10, int(window.getStart() + window.getSize()) * this.width, -10);
     popStyle();
-    
-    
-    
   }
 
   void draw() {
@@ -229,7 +232,7 @@ class AnimatedSprite {
       // Move the index forward in the animation sequence
       index += speed;
       // If we are at the end, go back to the beginning
-      
+
       index = window.getLoopedFrame(index);
 
       if (index >= images.length) {

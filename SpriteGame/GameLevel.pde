@@ -35,11 +35,18 @@ class GameLevel extends Sketch {
     scale(0.2,0.2);
     player1.getCurrentSprite().displayFrames();
     popMatrix();
-    translate(0, width/2);
+    translate(width/2, 0);
     scale(0.2,0.2);
     player2.getCurrentSprite().displayFrames();
-
     popMatrix();
+    
+    float p1HealthColor = map(player1.getHealth(), 0, 1, 255, 0);
+    fill(color(p1HealthColor, 255-p1HealthColor, 0));
+    text("P1 HEALTH: " + player1.getHealth(), 10, height - 10);
+    
+    float p2HealthColor = map(player2.getHealth(), 0, 1, 255, 0);
+    fill(color(p2HealthColor, 255-p2HealthColor, 0));
+    text("P2 HEALTH: " + player1.getHealth(), width/2, height - 10);
   }
 
   void keyPressed() {
@@ -84,17 +91,17 @@ class GameLevel extends Sketch {
     }
     
     if(keyCode == RIGHT){
-      player1.moveRight();
-    }
-    if(keyCode == LEFT){
-      player1.moveLeft();
-    }
-    
-    if(keyCode == 'd'){
       player2.moveRight();
     }
-    if(keyCode == 'a'){
+    if(keyCode == LEFT){
       player2.moveLeft();
+    }
+    
+    if(key == 'd'){
+      player1.moveRight();
+    }
+    if(key == 'a'){
+      player1.moveLeft();
     }
   }
 }
